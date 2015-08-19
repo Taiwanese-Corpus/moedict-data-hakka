@@ -13,7 +13,6 @@ from 臺灣言語工具.解析整理.物件譀鏡 import 物件譀鏡
 from 臺灣言語工具.解析整理.轉物件音家私 import 轉物件音家私
 from 轉到臺灣言語資料庫.調號處理 import 調號處理
 from 轉到臺灣言語資料庫.客話辭典正規化 import 客話辭典正規化
-from 臺灣言語工具.音標系統.客話.臺灣客家話拼音 import 臺灣客家話拼音
 from 轉到臺灣言語資料庫.缺字處理 import 缺字處理
 
 
@@ -124,13 +123,40 @@ class 整合到資料庫:
                 if 音標 != '':
                     腔口 = 音欄位.rstrip('音') + '腔'
                     try:
-                        self.處理腔口資料(腔口, 漢字, 音標)
+                        處理後漢字, 處理後音標 = self.處理腔口資料(腔口, 漢字, 音標)
                     except Exception as 錯誤:
                         print(錯誤)
                         print(編號, 腔口, 漢字, 音標, 華語)
 
 #                 break
-        "                print(一筆資料['釋義'])有例句"
+        客話解析 = re.compile('\ufff9(.+)')
+        華語解析 = re.compile('\ufffb（(.+)）')
+        解說解析 = re.compile('﹝.*﹞')
+        拿掉解說 = lambda 字串: 解說解析.sub('', 字串)
+        詞變化解析 = re.compile('（(.*)）')
+        拿掉詞變化括號 = lambda 字串: 詞變化解析.sub(lambda 物件: 物件.group(1), 字串)
+        for 資料 in self.資料抓出來():
+            編號 = 編號解析.search(資料['檔名']).group(1)
+            for 解釋 in 資料['釋義']:
+                try:
+                    for 客話例, 華語翻譯 in 解釋['example']:
+                        客話資料 = 拿掉詞變化括號(
+                            拿掉解說(
+                                self._缺字處理.取代(
+                                    客話解析.match(客話例).group(1)
+                                )
+                            )
+                        )
+                        try:
+                            華語資料 = 拿掉解說(
+                                華語解析.match(華語翻譯).group(1)
+                            )
+                        except AttributeError:
+                            華語資料 = None
+                        if 客話資料 != '。':
+                            print(編號, 客話資料, 華語資料)
+                except KeyError:
+                    pass
 
     def 處理腔口資料(self, 腔口, 漢字, 音標):
         無字音標 = self._正規化.處理音標頭前字(音標)
