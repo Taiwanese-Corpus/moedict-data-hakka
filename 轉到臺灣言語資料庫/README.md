@@ -2,15 +2,14 @@
 
 ## 流程
 
-## 匯入資料庫
-在`臺灣言語資料庫`專案目錄下
+## 產生資料庫格式
 ```bash
 git clone https://github.com/Taiwanese-Corpus/moedict-data-hakka.git
-sudo apt-get install -y python3 python-virtualenv
+sudo apt-get install -y python3 python-virtualenv libyaml-dev
 virtualenv --python=python3 venv
 . venv/bin/activate
 pip install -r requirements.txt
-echo "from 轉到臺灣言語資料庫.整合到資料庫 import 走 ; 走()" | PYTHONPATH=moedict-data-hakka python manage.py shell
+PYTHONPATH=. python 轉到臺灣言語資料庫/整合到資料庫.py
 ```
 
 ## 開發試驗
@@ -22,4 +21,3 @@ virtualenv --python=python3 venv
 pip install -r 轉到臺灣言語資料庫/requirements.txt
 python -m unittest 
 ```
-
