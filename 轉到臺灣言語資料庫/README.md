@@ -1,10 +1,18 @@
 # 轉到臺灣言語資料庫
 
-## 流程
+## 匯入
+```bash
+python manage.py 匯入資料 https://Taiwanese-Corpus.github.io/moedict-data-hakka/臺灣客家語常用詞辭典網路版語料.yaml
+```
 
 ## 產生資料庫格式
+看專案的Makefile，先產生`wip.json`
 ```bash
-git clone https://github.com/Taiwanese-Corpus/moedict-data-hakka.git
+make download
+make parse
+```
+產生`yaml`
+```bash
 sudo apt-get install -y python3 python-virtualenv libyaml-dev
 virtualenv --python=python3 venv
 . venv/bin/activate
