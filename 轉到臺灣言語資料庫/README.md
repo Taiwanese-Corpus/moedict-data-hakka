@@ -1,6 +1,9 @@
 # 轉到臺灣言語資料庫
 
-## 流程
+## 匯入
+```bash
+python manage.py 匯入資料 https://Taiwanese-Corpus.github.io/moedict-data-hakka/臺灣客家語常用詞辭典網路版語料.yaml
+```
 
 ## 產生資料庫格式
 ```bash
