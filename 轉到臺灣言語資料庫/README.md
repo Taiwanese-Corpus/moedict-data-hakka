@@ -6,8 +6,13 @@ python manage.py 匯入資料 https://Taiwanese-Corpus.github.io/moedict-data-ha
 ```
 
 ## 產生資料庫格式
+看專案的Makefile，先產生`wip.json`
 ```bash
-git clone https://github.com/Taiwanese-Corpus/moedict-data-hakka.git
+make download
+make parse
+```
+產生`yaml`
+```bash
 sudo apt-get install -y python3 python-virtualenv libyaml-dev
 virtualenv --python=python3 venv
 . venv/bin/activate
